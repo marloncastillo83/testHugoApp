@@ -4,7 +4,7 @@ locals {
 }
 
 provider "google" {
-  credentials = "${file("hg-test-361420-7e6410369e2e.json")}"
+  credentials = file("service-account.json")
   project     = local.project
   region      = local.region
 }
@@ -68,4 +68,21 @@ module "cloud_router" {
       }
     ]
   }]
+}
+
+resource "google_compute_instance" "vm_instance" {
+  name         = "hg-instance"
+  machine_type = "f1-micro"
+
+  boot_disk {
+    initializate_params {
+      image = "ubuntu-os-cloud/ubuntu-1604-lts"
+    }
+  }
+
+  network_interface {
+    subnetwork = "${module.vpc.subnet-services}"
+    access_config {}
+}
+
 }
