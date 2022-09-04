@@ -6,7 +6,7 @@ resource "google_compute_instance" "hugo-srv" {
 
   boot_disk {
     initialize_params {
-      image = "ubuntu-os-cloud/ubuntu-1604-lts"
+      image = "ubuntu-os-cloud/ubuntu-1804-bionic-arm64-v20220901"
     }
   }
 

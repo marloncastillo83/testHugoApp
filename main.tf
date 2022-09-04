@@ -1,6 +1,6 @@
 locals {
   env              = "dev"
-  project          = "citizix"
+  project          = "hg-test-361420"
   credentials_path = "service-account.json"
   region           = "us-west1"
 }
@@ -17,6 +17,6 @@ terraform {
 provider "google" {
   credentials = file(local.credentials_path)
 
-  project = "citizix-prj"
+  project = local.project
   region  = local.region
 }
