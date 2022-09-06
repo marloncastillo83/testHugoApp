@@ -1,0 +1,18 @@
+Detalle de la solucion:
+
+Se procede a configurar primeramente la infraestructura en GCP para lo cual se verifica documentacion oficial en https://cloud.google.com/
+para cada recurso solicitado. Se procede a configurar primeramente un terraform file con los componentes globales en el main.tf y luego se crean 
+las unidades de red y sus subredes en el archivo vpc.tf, luego se crea la maquina virtual mediante IaaC terraform en el archivo instance.tf 
+y todos sus componentesusando como image un disco de ubuntu 1804 permitiendo la conectividad desde ssh y de manera privada desde iap-tunnel, 
+en ella se crean dos output variables las cuales nos daran la informacion de la ip local de la VM y la IP-NAT para la conexion.
+
+Posteriormente se crea el archivo firewall.tf donde especificamos las reglas de inbound para la conectividad con la VM creada para la solucion. 
+Finalmente dentro de las tareas de IaaC creamos el cluster gke y su respectivo node pool no default en el archivo cluster.tf.
+
+Aunque no este requerido dentro de los criterios de esta solucion para efectos que esta sea funcional se ha desplegado en una nube GCP propia, 
+comprobando que todos los recursos se despliegan de manera correcta y existe la conectividad entre cada componente.
+
+Posterior a esto se toma una aplicacion backend que tenia en mis recursos propios y se procede a desplegar segun lo solicitado en conjunto con una 
+instancia de MongoDB Atlas. Se prepara el docker-compose a fin de empaquetar la solucion.
+
+
