@@ -18,7 +18,7 @@ resource "google_compute_instance" "hugo-srv" {
     }
   }
 
-  tags = ["allow-web", "allow-ssh"]
+  tags = ["allow-web", "allow-ssh", "iap-tunnel"]
 }
 
 output "hugosrv-nat-ip" {

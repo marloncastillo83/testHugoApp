@@ -17,10 +17,10 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
 
   node_config {
     preemptible  = true
-    machine_type = "f1-micro"
+    machine_type = "e2-micro"
 
     # Google recommends custom service accounts that have cloud-platform scope and permissions granted via IAM Roles.
-    service_account = google_service_account.default.email
+    service_account = "terraform-adm@hg-test-361420.iam.gserviceaccount.com"
     oauth_scopes    = [
       "https://www.googleapis.com/auth/cloud-platform"
     ]

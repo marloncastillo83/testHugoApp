@@ -17,7 +17,7 @@ resource "google_compute_firewall" "http-server" {
 
   allow {
     protocol = "tcp"
-    ports    = ["80"]
+    ports    = ["8080"]
   }
 
   allow {
@@ -28,4 +28,21 @@ resource "google_compute_firewall" "http-server" {
   // Allow traffic from everywhere to instances with an http-server tag
   source_ranges = ["0.0.0.0/0"]
   target_tags   = ["allow-web"]
+}
+
+resource "google_compute_firewall" "iap_to_ssh" {
+  name    = "ingress-allow-iap-to-ssh"
+  network = google_compute_network.vpc.name
+
+  direction = "INGRESS"
+  priority  = 1000
+
+  # Cloud IAP's TCP forwarding netblock
+  source_ranges = ["35.235.240.0/20"]
+  target_tags   = ["iap-tunnel"]
+
+  allow {
+    protocol = "tcp"
+    ports    = [22]
+  }
 }
