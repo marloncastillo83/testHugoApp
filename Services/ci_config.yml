@@ -1,0 +1,36 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/python:2.7.14
+        environment:
+          FLASK_CONFIG: testing
+    steps:
+      - checkout
+      - run:
+          name: Setup VirtualEnv
+          command: |
+            echo 'export TAG=0.1.${CIRCLE_BUILD_NUM}' >> $BASH_ENV
+            echo 'export IMAGE_NAME=python-circleci-docker' >> $BASH_ENV 
+            virtualenv hg-app
+            . hg-app/bin/activate
+            pip install --no-cache-dir -r requirements.txt
+      - run:
+          name: Run Tests
+          command: |
+            . hg-app/bin/activate
+            python hg-app_config.py
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Build and push Docker image
+          command: |
+            . hg-app/bin/activate
+            pyinstaller -F hg-app_config.py
+            docker build -t hg-app/$IMAGE_NAME:$TAG .
+            echo $DOCKER_PWD | docker login -u $DOCKER_LOGIN --password-stdin
+            docker push hg-app/$IMAGE_NAME:$TAG
+      - run:
+          name: Deploy app to GCP via Docker
+          command: |
+            ssh -o StrictHostKeyChecking=no root@hello.dpunks.org "/bin/bash ./deploy_app.sh hg-app/$IMAGE_NAME:$TAG"
