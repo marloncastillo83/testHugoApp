@@ -4,7 +4,7 @@
 
 #issue the following command to import the MongoDB public GPG Key
 wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo apt-key add -
-#if you receive an error indicating that gnupg is not installed, you can
+#if you receive an error indicating that gnupg is not installed, you can issue
 sudo apt-get install gnupg
 #then retry importing the key
 wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo apt-key add -
